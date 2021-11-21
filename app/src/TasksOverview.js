@@ -13,20 +13,23 @@ const TasksOverview = props => {
   }, []);
 
   const isLoading = tasks === null;
-  return isLoading
-    ? 'Loading…'
-    : <>
-        <h1>Tasks</h1>
-        <ul>
-          {tasks.map(task => (
-            <li>
-              <Link to={`/${task.id}`}>
-                {task.instructions}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </>
+
+  if (isLoading) { return 'Loading...'}
+
+  return (
+    <>
+      <h1>Tasks</h1>
+      <ul>
+        {tasks.map(task => (
+          <li key={task.id}>
+            <Link to={`/${task.id}`}>
+              {task.instructions}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
 };
 
 export default TasksOverview;
