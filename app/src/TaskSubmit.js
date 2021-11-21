@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const TaskSubmit = props => {
@@ -8,7 +8,7 @@ const TaskSubmit = props => {
   const [answer, setAnswer] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       const response = await fetch(`http://localhost:5000/tasks/${taskId}`);
       const result = await response.json();
@@ -16,11 +16,11 @@ const TaskSubmit = props => {
     })();
   }, [taskId]);
 
-  const onChangeAnswer = React.useCallback(event =>
+  const onChangeAnswer = useCallback(event =>
     setAnswer(event.target.value)
   , []);
 
-  const onSubmitAnswer = React.useCallback(event => {
+  const onSubmitAnswer = useCallback(event => {
     (async () => {
       setIsSubmitting(true);
 
