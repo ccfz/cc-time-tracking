@@ -10,7 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_172935) do
+ActiveRecord::Schema.define(version: 2021_11_21_152233) do
+
+  create_table "devices", force: :cascade do |t|
+    t.string "device_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "session_id"
+    t.index ["session_id"], name: "index_devices_on_session_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "task_id"
+    t.index ["task_id"], name: "index_sessions_on_task_id"
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.string "instructions", null: false
