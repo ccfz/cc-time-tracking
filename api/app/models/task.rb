@@ -5,6 +5,12 @@ class Task < ApplicationRecord
 
   validates :answer, presence: true, if: :submitted?
 
+  def compute_total_time
+    self.sessions
+      .select("sum((julianday(end_time) - julianday(start_time)))
+               * 24 * 60 as total_time").first.total_time.floor
+  end
+
   def self.generate_report
     total_time = Task.joins(:sessions)
                    .select("sum((julianday(end_time) - julianday(start_time)))

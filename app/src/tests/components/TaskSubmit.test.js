@@ -57,6 +57,31 @@ describe('TaskSubmit', () => {
         expect(stopSession).toHaveBeenCalled();
       })
     });
+
+    it('renders the supplied answer and received total time', async () => {
+      window.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          success: true,
+          data: {
+            success: true,
+            total_time: 30,
+            answer: 'Hello World!',
+            submitted: true
+          }
+        })
+      })
+      const stopSession = jest.fn();
+      useSession.mockReturnValue({ stopSession })
+      renderTaskSubmit();
+
+      await waitFor(() => {
+        expect(screen.getByText('Hello World!')).toBeTruthy();
+        expect(
+          screen.getByText('Time to complete: 30/minutes')
+        ).toBeTruthy();
+      });
+    });
   });
 
   describe('when the window becomes blurred', () => {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_21_152233) do
+ActiveRecord::Schema.define(version: 2021_11_22_052057) do
 
   create_table "devices", force: :cascade do |t|
     t.string "device_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_11_21_152233) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "total_time", default: 0
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 

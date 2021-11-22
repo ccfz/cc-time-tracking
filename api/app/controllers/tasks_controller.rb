@@ -29,6 +29,9 @@ class TasksController < ApplicationController
     end
 
     success = task.update(task_params)
+    task.sessions.active.first.end_session
+    task.update(total_time: task.compute_total_time)
+
     return render(
       json: {
         success: success,

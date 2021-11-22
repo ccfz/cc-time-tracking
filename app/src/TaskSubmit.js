@@ -36,7 +36,6 @@ const TaskSubmit = ({ history }) => {
   const onSubmitAnswer = useCallback(event => {
     (async () => {
       setIsSubmitting(true);
-      stopSession()
       const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
@@ -54,13 +53,17 @@ const TaskSubmit = ({ history }) => {
     })();
   }, [taskId, answer]);
 
+  const onNavigateBack = () => {
+    if (!task.submitted) { stopSession() }
+  }
+
   const isLoading = task === null;
   return isLoading
     ? 'Loading…'
     : (
       <>
         <div>
-          <Link to="/" onClick={stopSession}>Back</Link>
+          <Link to="/" onClick={onNavigateBack}>Back</Link>
         </div>
         <div>
           <h1>{task.instructions}</h1>
@@ -72,6 +75,7 @@ const TaskSubmit = ({ history }) => {
                   <h3>Your answer</h3>
                   <hr />
                   <p>{task.answer}</p>
+                  <h2>{`Time to complete: ${task.total_time}/minutes`}</h2>
                 </>
               ) : (
                 <>
