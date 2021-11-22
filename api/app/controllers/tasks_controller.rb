@@ -4,6 +4,12 @@ class TasksController < ApplicationController
     render json: { success: true, data: tasks }, status: 200
   end
 
+  def report
+    report = Task.generate_report
+
+    render json: { success: true, data: report }, status: 200
+  end
+
   def show
     task = Task.find(task_id)
     return render(json: { success: false, errors: 'Task not found' }) \
@@ -23,7 +29,6 @@ class TasksController < ApplicationController
     end
 
     success = task.update(task_params)
-    task.sessions.active.update_all(end_date: Time.now)
     return render(
       json: {
         success: success,

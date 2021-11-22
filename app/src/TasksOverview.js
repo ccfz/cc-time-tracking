@@ -19,6 +19,9 @@ const TasksOverview = props => {
   return (
     <>
       <h1>Tasks</h1>
+      <Link to={`/report`}>
+        <h2>Report</h2>
+      </Link>
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
