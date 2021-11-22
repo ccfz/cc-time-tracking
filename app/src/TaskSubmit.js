@@ -1,12 +1,25 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-const TaskSubmit = props => {
+import useSession from './hooks/useSession';
+
+const TaskSubmit = ({ history }) => {
   const { id: taskId } = useParams();
-  const [task, setTask] = React.useState(null);
-  const [errors, setErrors] = React.useState(null);
-  const [answer, setAnswer] = React.useState('');
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { stopSession, startSession } = useSession(taskId);
+  const [task, setTask] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const [answer, setAnswer] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener('focus', startSession);
+    window.addEventListener('blur', stopSession);
+
+    return () => {
+      window.removeEventListener('focus', startSession);
+      window.removeEventListener('blur', stopSession);
+    }
+  });
 
   useEffect(() => {
     (async () => {
@@ -23,7 +36,7 @@ const TaskSubmit = props => {
   const onSubmitAnswer = useCallback(event => {
     (async () => {
       setIsSubmitting(true);
-
+      stopSession()
       const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +60,7 @@ const TaskSubmit = props => {
     : (
       <>
         <div>
-          <Link to="/">Back</Link>
+          <Link to="/" onClick={stopSession}>Back</Link>
         </div>
         <div>
           <h1>{task.instructions}</h1>

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const TasksOverview = props => {
   const [tasks, setTasks] = React.useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       const response = await fetch('http://localhost:5000/tasks');
       const result = await response.json();
